@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project EDNA - Enhancing CTI's Capabilities Through AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a237e;
+            --primary-light: #534bae;
+            --secondary: #ff6d00;
+            --light: #f5f7fa;
+            --dark: #263238;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+        .section-heading {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .section-heading:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 100%;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--secondary);
+            border: 4px solid var(--primary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item.left::after {
+            left: -10px;
+        }
+        .nav-link {
+            position: relative;
+            padding: 10px 0;
+            margin: 0 20px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .chart-container {
+            height: 300px;
+            margin: 30px 0;
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        .department-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .ai-highlight {
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.1) 0%, rgba(83, 75, 174, 0.1) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        /* Custom styles for the charts */
+        .chart-bar {
+            height: 30px;
+            background-color: var(--primary-light);
+            margin: 10px 0;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-bar-label {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 600;
+        }
+        .chart-bar-text {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 600;
+        }
+        .phase-card {
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 15px 0;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .quote-block {
+            font-style: italic;
+            border-left: 4px solid var(--secondary);
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Hero Section -->
+    <section class="hero px-4 md:px-0">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="py-12">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Project EDNA</h1>
+                    <p class="text-xl md:text-2xl mb-6">Enhancing Departmental & Natural Abilities</p>
+                    <p class="mb-8 text-gray-100">A strategic AI initiative to superpower CTI employees by integrating intelligent tools into daily workflows.</p>
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                        <a href="#introduction" class="btn-primary">Explore The Vision</a>
+                        <a href="#call-to-action" class="btn-outline bg-white">Take Action</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex justify-center">
+                    <div class="relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full blur"></div>
+                        <div class="relative bg-white p-6 rounded-full">
+                            <i class="fas fa-robot text-9xl text-gray-800"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="sticky-nav py-4 hidden md:block">
+        <div class="container mx-auto">
+            <ul class="flex flex-wrap justify-center">
+                <li><a href="#introduction" class="nav-link">Introduction</a></li>
+                <li><a href="#challenge" class="nav-link">The Challenge</a></li>
+                <li><a href="#opportunity" class="nav-link">The Opportunity</a></li>
+                <li><a href="#blueprint" class="nav-link">The Blueprint</a></li>
+                <li><a href="#payoff" class="nav-link">The Payoff</a></li>
+                <li><a href="#mission-plan" class="nav-link">Mission Plan</a></li>
+                <li><a href="#resources" class="nav-link">Resources</a></li>
+                <li><a href="#call-to-action" class="nav-link">Call to Action</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Introduction Section -->
+    <section id="introduction" class="py-20 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold section-heading">1. Introduction: Unleashing CTI's Superpowers with EDNA</h2>
+            
+            <div class="ai-highlight mb-10">
+                <p class="italic text-lg">"In the world of superheroes, the right suit, equipped with the perfect enhancements, can elevate an individual's inherent abilities to extraordinary levels."</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <p class="mb-4">Edna Mode, the visionary designer from <em>The Incredibles</em>, understood that technology and design, when masterfully applied, could unlock hidden potential and prepare heroes for any challenge. At Conference Technologies Inc. (CTI), we stand at a similar threshold, poised to equip our own talented teams with the transformative power of Artificial Intelligence.</p>
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <nav class="sticky-nav py-4 hidden md:block">
+            <div class="container mx-auto">
+                <ul class="flex flex-wrap justify-center">
+                    <li><a href="#introduction" class="nav-link">Introduction</a></li>
+                    <li><a href="#challenge" class="nav-link">The Challenge</a></li>
+                    <li><a href="#opportunity" class="nav-link">The Opportunity</a></li>
+                    <li><a href="#blueprint" class="nav-link">The Blueprint</a></li>
+                    <li><a href="#payoff" class="nav-link">The Payoff</a></li>
+                    <li><a href="#mission-plan" class="nav-link">Mission Plan</a></li>
+                    <li><a href="#resources" class="nav-link">Resources</a></li>
+                    <li><a href="#call-to-action" class="nav-link">Call to Action</a></li>
+                </ul>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Frictionless Field Interface</h3>
+                    <p class="text-gray-600 text-center">Mobile and voice commands allow for zero-friction updates from technicians in the field, ensuring data accuracy and ease of use.</p>
+                </div>
+                
+                <div class="card bg-white rounded-lg p-6 shadow-md">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-brain text-4xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center">Predictive & Anomaly AI</h3>
+                    <p class="text-gray-600 text-center">Proactively identify phantom gear, potential losses, and operational irregularities, shifting from reactive problem-solving to proactive intervention.</p>
+                </div>
+            </div>
+            
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-6">AI Adoption Insights</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-chart-pie text-green-500 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">92%</h4>
+                        </div>
+                        <p class="text-gray-600">Of early AI adopters are already realizing a return on their investment, with an average return of $1.41 for every dollar spent.</p>
+                        <p class="text-sm text-gray-500 mt-4">Source: Snowflake Research, 2025</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-user-plus text-blue-500 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">Augmentation Not Replacement</h4>
+                        </div>
+                        <p class="text-gray-600">Our goal is to empower our dedicated employees, equipping them with AI tools that enhance their natural skills and innate talents, automate mundane tasks, and free them to focus on higher-value work that requires uniquely human ingenuity and critical thinking.</p>
+                        <p class="text-sm text-gray-500 mt-4">Source: Workday's approach to AI adoption, 2025</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-highlight">
+                <p class="font-semibold text-lg mb-2">The vision for Project EDNA:</p>
+                <p>To foster a culture of innovation and heightened effectiveness, where AI acts as a sophisticated partner, enabling our teams to achieve unprecedented levels of productivity and ingenuity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Blueprint Section -->
+    <section id="blueprint" class="py-20 bg-gray-100 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold section-heading">4. Project EDNA: The Blueprint for CTI's Transformation</h2>
+            
+            <p class="mb-10">Project EDNA is envisioned as more than a collection of disparate AI tools; it is a comprehensive blueprint for CTI's evolution into an AI-augmented organization. The core philosophy driving this transformation is one of empowerment through augmentation, fostering a culture of continuous improvement where AI serves as a catalyst for human ingenuity.</p>
+            
+            <div class="mb-16">
+                <h3 class="text-2xl font-semibold mb-6">AI Superpowers Across CTI Departments</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-tasks department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Project Managers</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Predictive analytics for project delays & budget overruns</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Intelligent scheduling for resource optimization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Automated reporting to reduce administrative burdens</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-drafting-compass department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Engineers</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>AI-assisted design tools for rapid option generation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Advanced simulation capabilities for deeper insights</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Knowledge management for technical documentation</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-code department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Programmers</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>AI-driven code generation and completion</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Automated testing to identify bugs and suggest fixes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Intelligent code analysis for optimization</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-toolbox department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Install Techs</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Enhanced ETR system for equipment tracking</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Mobile diagnostic guides for on-site troubleshooting</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Route optimization for efficient multi-site planning</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-wrench department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Service Techs</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Predictive maintenance to forecast failures</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>AI-powered diagnostics for repair recommendations</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Intelligent parts management for availability</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card bg-white rounded-lg p-6 shadow-md">
+                        <div class="text-center">
+                            <i class="fas fa-calendar-check department-icon"></i>
+                            <h4 class="text-xl font-semibold mb-4">Project Coordinators</h4>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Automated document processing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Smart scheduling for optimal meeting times</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                <span>Information aggregation for concise summaries</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-10">
+                <h3 class="text-2xl font-semibold mb-6">Framework for Successful AI Integration</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-bullhorn text-blue-600 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">Building Awareness & Excitement</h4>
+                        </div>
+                        <p class="text-gray-600">Using the ETR pilot's success as a springboard for internal campaigns, demonstrations, and sharing tangible success stories.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-users-cog text-blue-600 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">Empowering AI Champions</h4>
+                        </div>
+                        <p class="text-gray-600">Identifying and training key individuals within each department to act as advocates, provide peer support, and drive adoption.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-shield-alt text-blue-600 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">Responsible AI Implementation</h4>
+                        </div>
+                        <p class="text-gray-600">Developing CTI-specific responsible AI framework addressing security, privacy, data governance, and ethical considerations.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-chart-line text-blue-600 mr-4 text-2xl"></i>
+                            <h4 class="text-xl font-semibold">Investing in AI for the Future</h4>
+                        </div>
+                        <p class="text-gray-600">Establishing a cross-functional AI advisory council to guide strategic decisions and adopting flexible software review processes.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-highlight">
+                <p>By systematically implementing these elements, Project EDNA will lay a robust foundation for CTI to harness the full spectrum of AI capabilities, transforming not just how we work, but how we innovate and lead in our industry.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Payoff Section -->
+    <section id="payoff" class="py-20 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold section-heading">5. The Payoff: Quantifiable Benefits and Strategic Impact</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Immediate ETR System Benefits</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold flex items-center">
+                                <i class="fas fa-chart-line text-green-500 mr-3"></i>
+                                Equipment Loss Reduction
+                            </h4>
+                            <p class="text-gray-600 mb-2">50% reduction in annual equipment losses</p>
+                            <p class="text-xl font-bold text-green-600">$25,000 - $37,500 savings/year</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold flex items-center">
+                                <i class="fas fa-tachometer-alt text-blue-500 mr-3"></i>
+                                Tech Productivity Boost
+                            </h4>
+                            <p class="text-gray-600 mb-2">Reclaiming 25-50 hours of technician time per week</p>
+                            <p class="text-xl font-bold text-blue-600">$97,500 - $195,000 value/year</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4 class="text-lg font-semibold flex items-center">
+                                <i class="fas fa-cogs text-purple-500 mr-3"></i>
+                                Operational Efficiency
+                            </h4>
+                            <p class="text-gray-600">Faster project startups, reduction in costly delays, clearer accountability across teams</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Strategic Long-term Impact</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-rocket text-blue-600 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Increase in Overall Productivity</h4>
+                                <p class="text-gray-600">Employees freed from repetitive tasks and empowered with intelligent assistance</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Enhanced Innovation</h4>
+                                <p class="text-gray-600">Advanced analytical tools and automated data synthesis to uncover new insights and opportunities</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-user-graduate text-green-500 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Improved Employee Engagement</h4>
+                                <p class="text-gray-600">More meaningful work and opportunities to develop new AI-related skills</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-trophy text-orange-500 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Competitive Advantage</h4>
+                                <p class="text-gray-600">Positioning as an AI-forward company and leader in leveraging technology</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-expand-arrows-alt text-purple-500 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Scalable Efficiency</h4>
+                                <p class="text-gray-600">Solutions developed for one area can be adapted and applied across departments</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <i class="fas fa-user-plus text-red-500 mr-4 text-2xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-lg">Talent Attraction & Retention</h4>
+                                <p class="text-gray-600">Demonstrable commitment to innovation makes CTI an employer of choice</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-highlight">
+                <p class="text-lg">The cumulative effect of these benefits will be a more agile, efficient, innovative, and profitable CTI, well-equipped to navigate the complexities of the modern business landscape and achieve its long-term strategic objectives.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Plan Section -->
+    <section id="mission-plan" class="py-20 bg-gray-100 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold section-heading">6. The Mission Plan: Phased Implementation Roadmap</h2>
+            
+            <p class="mb-10">The successful realization of Project EDNA requires a pragmatic and phased implementation roadmap, designed to deliver early wins, foster organizational learning, and build momentum for broader transformation.</p>
+            
+            <div class="mb-16">
+                <div class="phase-card">
+                    <div class="flex flex-wrap md:flex-nowrap">
+                        <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                            <div class="bg-blue-700 text-white rounded-lg p-4 text-center">
+                                <h4 class="font-bold">PHASE 1</h4>
+                                <p class="text-sm">Months 1-6</p>
+                                <p class="font-semibold mt-2">Foundation & ETR Pilot</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-3/4 md:pl-8">
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Establishment of an AI Advisory Council</strong> - Cross-functional team providing strategic oversight</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>AI-ETR Pilot Project Launch</strong> - Team composition includes AI/Technical Lead, Warehouse Rep, Field Tech, Project Coordinator</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Pilot Scope</strong> - Track 50-100 high-value items over 8 weeks</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Technical Requirements</strong> - Cloud services, QR/NFC tags, mobile interface prototype, Claimr API integration</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Initial Responsible AI Guidelines</strong> - Addressing data privacy, security, and ethical use</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="flex flex-wrap md:flex-nowrap">
+                        <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                            <div class="bg-blue-600 text-white rounded-lg p-4 text-center">
+                                <h4 class="font-bold">PHASE 2</h4>
+                                <p class="text-sm">Months 7-18</p>
+                                <p class="font-semibold mt-2">Targeted Skill Development & Tool Pilots</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-3/4 md:pl-8">
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Identify High-Impact Use Cases</strong> - AI Advisory Council leads prioritization with department heads</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>AI Awareness Programs</strong> - Training for AI Champions across departments</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Additional Department Pilots</strong> - 1-2 pilots in other departments (e.g., Project Management, Engineering)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="flex flex-wrap md:flex-nowrap">
+                        <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                            <div class="bg-blue-500 text-white rounded-lg p-4 text-center">
+                                <h4 class="font-bold">PHASE 3</h4>
+                                <p class="text-sm">Months 19-36</p>
+                                <p class="font-semibold mt-2">Scale, Integrate & Cultivate</p>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-3/4 md:pl-8">
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Expansion of Successful Solutions</strong> - Broader deployment across relevant departments</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Continuous Refinement</strong> - Ongoing development of CTI's AI strategy and tools</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span><strong>Culture of AI Learning</strong> - Encouraging experimentation and innovation at all levels</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-highlight">
+                <p>Through this phased approach, Project EDNA will systematically build CTI's AI capabilities, manage risk, and ensure that each step delivers measurable value, paving the way for a truly AI-empowered future.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="py-20 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold section-heading">7. Resources Required: Fueling the Initiative</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">ETR Pilot Budget</h3>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold text-lg">Cloud Computing Services</h4>
+                            <span class="text-xl font-bold">~$3,000</span>
+                        </div>
+                        <p class="text-gray-600">Necessary AI model training, hosting, and data processing capabilities</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold text-lg">Equipment Tagging</h4>
+                            <span class="text-xl font-bold">~$1,000</span>
+                        </div>
+                        <p class="text-gray-600">QR codes or NFC tags for seamless identification and tracking</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold text-lg">Development Resources</h4>
+                            <span class="text-xl font-bold">Internal</span>
+                        </div>
+                        <p class="text-gray-600">Leveraging existing CTI talent with your technical leadership</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold text-lg">Total Estimated Budget</h4>
+                            <span class="text-2xl font-bold text-blue-600">$5,000 - $8,000</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-chart-line text-green-500 mr-3 text-xl"></i>
+                            <p class="text-gray-700">Projected to yield returns far exceeding this outlay</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Broader EDNA Initiative Resources</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg p-6 shadow-md">
+                            <div class="flex items-start mb-2">
+                                <i class="fas fa-users text-blue-600 mr-4 text-2xl mt-1"></i>
+                                <h4 class="font-semibold text-lg">Personnel</h4>
+                            </div>
+                            <ul class="pl-12 space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Your continued leadership role
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Cross-functional pilot teams
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Departmental AI Champions
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Potential future specialized AI talent
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-6 shadow-md">
+                            <div class="flex items-start mb-2">
+                                <i class="fas fa-microchip text-blue-600 mr-4 text-2xl mt-1"></i>
+                                <h4 class="font-semibold text-lg">Technology</h4>
+                            </div>
+                            <ul class="pl-12 space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Comprehensive AI platforms
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Advanced analytical tools
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Enhanced data infrastructure
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-6 shadow-md">
+                            <div class="flex items-start mb-2">
+                                <i class="fas fa-graduation-cap text-blue-600 mr-4 text-2xl mt-1"></i>
+                                <h4 class="font-semibold text-lg">Training & Change Management</h4>
+                            </div>
+                            <ul class="pl-12 space-y-2 text-gray-600">
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Workshops and learning materials
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Internal communication campaigns
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    AI awareness culture initiatives
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Broader educational programs to demystify AI, highlighting how it serves as an extension of human capabilities, and foster a culture where data-driven insights enhance our teams' natural decision-making and problem-solving abilities across CTI
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section id="call-to-action" class="py-20 bg-gradient-to-r from-blue-800 to-blue-600 text-white px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">8. The Call to Action: Join the League of AI-Powered CTI</h2>
+            
+            <p class="text-lg mb-10">The preceding sections have laid out a comprehensive vision for Project EDNA, a strategic imperative designed to elevate Conference Technologies Inc. to new heights of efficiency, innovation, and market leadership. Now is the moment to move from concept to reality, to embrace the future and equip our talented teams with the AI-powered tools they need to excel.</p>
+            
+            <div class="bg-white text-gray-800 rounded-lg p-8 shadow-lg mb-12">
+                <h3 class="text-2xl font-bold mb-6 text-blue-800">We respectfully request your support to:</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-4">
+                            <i class="fas fa-check text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Approve Project EDNA</h4>
+                            <p class="text-gray-600">Endorse this strategic initiative as a priority for CTI's future growth and innovation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-4">
+                            <i class="fas fa-check text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Greenlight the AI-ETR Pilot</h4>
+                            <p class="text-gray-600">Allocate the modest $5,000-$8,000 budget and approve the cross-functional team</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-4">
+                            <i class="fas fa-check text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Endorse My Leadership</h4>
+                            <p class="text-gray-600">Support me in spearheading this initiative to drive momentum across CTI</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-4">
+                            <i class="fas fa-check text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Champion AI Advisory Council</h4>
+                            <p class="text-gray-600">Support the formation of this critical cross-departmental governance body</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quote-block text-lg">
+                <p>"Like Edna Mode, we have the opportunity to design the tools that will unleash the inherent superpowers within our organization. Let us seize this moment and together build a more intelligent, more capable, and more incredible CTI."</p>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="btn-primary bg-white text-blue-800 hover:bg-gray-100 hover:text-blue-900 inline-block px-10 py-4 text-lg">Ready to Launch Project EDNA</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section class="py-16 bg-gray-100 px-4 md:px-0">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold section-heading">References</h2>
+            
+            <div class="bg-white rounded-lg p-6 shadow-md">
+                <ol class="list-decimal pl-5 space-y-4">
+                    <li>
+                        <p>Redler, G. (2025, April 23). <em>Driving Successful AI Adoption: Insights from Workday's CIO</em>. Workday Blog. Retrieved from <a href="https://blog.workday.com/en-us/driving-successful-ai-adoption-insights-from-workdays-cio.html" class="text-blue-600 hover:underline">https://blog.workday.com/en-us/driving-successful-ai-adoption-insights-from-workdays-cio.html</a></p>
+                    </li>
+                    <li>
+                        <p>Snowflake. (2025, April 15). <em>Snowflake Research Reveals that 92% of Early Adopters See ROI From AI Investments</em>. Snowflake Press Releases. Retrieved from <a href="https://www.snowflake.com/en/news/press-releases/snowflake-research-reveals-that-92-percent-of-early-adopters-see-roi-from-ai-investments/" class="text-blue-600 hover:underline">https://www.snowflake.com/en/news/press-releases/snowflake-research-reveals-that-92-percent-of-early-adopters-see-roi-from-ai-investments/</a></p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10 px-4 md:px-0">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold">Project EDNA</h3>
+                    <p class="text-gray-400">Enhancing Departmental & Natural Abilities</p>
+                </div>
+                <div class="flex space-x-4">
+                    <div class="text-gray-400">
+                        <p>Jonathan Fiorante</p>
+                        <p>© 2025 All Rights Reserved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
